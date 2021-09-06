@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>🤓 Testing Workshop</title>
 
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
@@ -12,12 +12,374 @@
 
 		<!-- Theme used for syntax highlighted code -->
 		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		<link rel="stylesheet" href="./own-styles.css">
+
+    <style>
+      :root {
+        --r-main-font-size: 30px;
+        /* --r-heading1-size: 3em;
+        --r-heading2-size: 2em;
+        --r-heading3-size: 1.6em;
+        --r-heading4-size: 1em; */
+      }
+    </style>
 	</head>
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+
+        <section>
+          <h1>Testing Workshop</h1>
+        </section>
+
+        <section>
+          <h2>Saninn Salas Díaz</h2>
+          <div>
+            <div class="avatar">
+
+            </div>
+            <div class="details">
+              Senior Software Developer @ qupaya technologies GmbH 
+              <!-- <ul>
+                <li>Senior Software Developer @ qupaya technologies GmbH </li>
+                <li>
+                  
+                </li>
+              </ul> -->
+            </div>
+          </div>
+        </section>
+        <section>
+          <h2>Why don't we want tests?</h2>
+        </section>
+				<section>
+          <ul>
+            <li>Takes the double (or triple) time. <br>
+                <small>Fixing repetitive regressions and manual testing take more time.</small>
+            </li>
+            <li>Do not prevent bugs <br>
+                <small>it prevent repeat the same bug</small>
+            </li>
+            <li>Costs more (developer time is 💸💸) <br>
+                <small>see 1. </small>
+            </li>
+            <li>It is hard they break all the time! <br>
+                <small>This workshop! (and a lot of practice)</small>
+            </li>
+          </ul>
+        </section>
+
+        <section><h2>Tests in our Angular Project</h2></section>
+				<section>
+          <ul>
+            <li>Unit tests &nbsp; 👉🏼 &nbsp; jest<br>
+                <small>Services, Pure Functions (helpers)</small>
+              </li>
+            <li>Shallow tests &nbsp; 👉🏼  &nbsp; jest + @testing-library/angular<br>
+                <small>Presentation/Dummy Components</small>
+              </li>
+            <li>End-to-end tests &nbsp; 👉🏼 &nbsp;  Cypress<br>
+                <small>Libraries, Smart Components, App Components.</small>
+              </li>
+          </ul>
+
+          <div>
+          <small>
+            <br>
+            Also see: <a href="https://blog.angular-university.io/angular-2-smart-components-vs-presentation-components-whats-the-difference-when-to-use-each-and-why/">
+              Smart vs Presentation Components</a>
+          </small>
+        </div>
+        </section>
+
+        <!-- Tip: Dummy components can also have local provider services 😉 -->
+        <section data-info="How to Develop With Tests Vertical">
+
+          <section><h2>How to develop with tests?</h2></section>
+
+          <section><h3>After Development Testing 🤭</h3></section>
+          <section>
+            <ul>
+              <li>Tedious.<br>
+                <small>"My work is done! 🥳... oh wait... I still have to write the tests 😭".</small>
+              </li>
+              
+              <li>Requires double/triple check. (Example)<br>
+                  <small>To prevent a green field of PASS tests, we have to make our tests fail.</small>  
+              </li>
+
+              <li>"I will merge it and test it later"<br>
+                <small>`Later` is roughly equivalent to 2512 years.</small> 
+              </li>
+
+              <li>Pressure problems -> Manager: Merge it and test it later.<br>
+                <small> Did I already said how much time `later` equals to?</small> 
+              </li>
+            </ul>
+          </section>
+
+          <section><h3>Test Driven Development 🥳</h3>
+            #TDD
+          </section>
+          
+          <section data-markdown>
+              * The test are done together with the implementation.
+              * Enables you find errors before they happen.
+              * Enables you to think before code.
+              
+              * Cons
+                * It takes time until it feels naturally to you.
+                * You have to take an stand and defend the time they take when given your time estimations
+          </section>
+        </section>
+
+        <section>
+          <section><h2>What to test?</h2></section>
+
+          <section data-info="What to test on services">
+            <div data-markdown>
+              ## Angular Services Testing
+                1. Test public APIs function returns.
+                1. Public state changes.
+                1. External fire and forget requests.
+            </div>
+            
+            <hr />
+            <div class="fragment-replace-container">
+              <div class="fragment fragment-replace-item" data-markdown>
+                ```typescript []
+                // Service without dependencies
+                public save(objectToSave: SomeInterface): void;
+                public get(id: number): SomeInterface | null;
+
+                // ----
+                test('saved locally', () => {
+                  const wantedId = 888;
+                  
+                  service.save({
+                    id: wantedId,
+                    data: 'Hello I am some object'
+                  });
+
+                  const savedObject = service.get(wantedId)
+                  expect(savedObject).toBeDefined();
+                });
+                ```
+              </div>
+
+              <div class="fragment fragment-replace-item" data-markdown>
+                ```typescript []
+                // Service with Backend dependencies
+                public save(objectToSave: SomeInterface): void;
+                public get(id: number): SomeInterface | null;
+
+                // ----
+                test('saved locally', () => {
+                  const wantedPayload: SomeInterface = {
+                    id: wantedId,
+                    data: 'Hello I am some object'
+                  }
+                  
+                  service.save(wantedPayload);
+
+                  const savedObject = service.get(wantedId);
+                  verify(SomeDependencyMock.save(objectContaining(wantedPayload))).once();
+                });
+                ```
+              </div>
+            </div> 
+          </section>
+
+          <section data-info="What to test on components">
+            <div data-markdown>
+              ## Test on Components
+                1. Test visible elements.
+                1. Test element changes.
+                1. External fire and forget requests.
+            </div>
+            
+            <hr />
+            <div class="fragment-replace-container">
+              <div class="fragment fragment-replace-item" data-markdown>
+                ```typescript []
+                  Some example here
+                ```
+              </div>
+
+              <div class="fragment fragment-replace-item" data-markdown>
+                ```typescript []
+                Some example here
+                ```
+              </div>
+            </div> 
+          </section>
+
+        </section>
+
+        <section data-info="My Approach">
+          <section><h2>My Approach to unit (service) test</h2></section>
+          <section data-markdown>
+            ### Preparation
+              * Each public function (API) goes into their own describe block.
+              * Layout the general expectations of your function using `test.todo`
+                  * Sad Path 
+                  * Happy Path
+              * Group test with the same environments
+
+            Notes: 
+              * Some people like to start with the happy path.
+              * Some people does not like to group similar requirements on before each.
+          </section>
+
+          <section data-markdown>
+            ```typescript [2-3]
+            describe('My Service', () => {
+
+              describe('#saveResource', () => {
+                test.todo('throw an error when the resource does not have any id');
+                test.todo('return false if the resource was already saved');
+
+                describe('resource with correct form', () => {
+                  test.todo('returns true');
+                  test.todo('saves the resource in backend');
+                });
+                
+              });
+
+            })
+            ```               
+          </section>
+
+          <section data-markdown>
+            ### Implementation (part 2)
+              * Define the code that makes your first `test.todo` fail.
+              * Write the implementation code until your test pass.
+              * Repeat 🔁
+            
+
+          </section>
+
+          <section data-markdown>
+            ```typescript [3-18]
+            describe('My Service', () => {
+
+              let service: MyService;
+
+              beforeEach(() => {
+                service = new MyService();
+              });
+
+              describe('#saveResource', () => {
+
+                test('throw an error when the resource does not have any id', () => {
+                  const myResource: Resource = {
+                    name:
+                  }
+
+                  expect(() => service.saveResource(myResource)).toThrow();
+                });
+
+                test.todo('return false if the resource was already saved');
+
+                describe('resource with correct form', () => {
+                  test.todo('returns true');
+                  test.todo('saves the resource in backend');
+                });
+                
+              });
+
+            })
+            ```               
+          </section>
+
+          <section data-markdown>
+            ```typescript [4-11]
+            @Injectable({
+              providedIn: 'root',
+            })
+            export class SharedDebuggingService {
+
+              public readonly saveResource(resource: Resource){
+                if(!resource.id) {
+                  throw new Error('No Id was found')
+                }
+              }
+
+            }
+            ```               
+          </section>
+
+
+          <section data-markdown>
+            ### Implementation (part 2)
+              * Same mock configurations are group on `beforeEach` calls.
+              * Optional: group environment details on function with descriptive names
+
+            Notes: 
+              * Some people does not like to group environments/requirements on before each.
+          </section>
+
+          <section data-markdown>
+            ```typescript [2-3]
+            describe('My Service', () => {
+
+              describe('#loadValueFromBackend', () => {
+
+                describe('loading when the service is initialized', () => {
+                  const validToken = 'I Am valid 🤓';
+
+                  function initializeService(): void {
+                    service.start();
+                    service.register('I do not know, something here');
+                  }
+
+                  beforeEach(() => {
+                    when(SomeServiceProviderMock.getToken()).thenReturn(validToken);
+                  });
+
+                  test('loads the responseFromBackEnd', () => {
+                    // Arrange
+                    initializeService();
+
+                    service.loadValueFromBackend();
+
+                    expect(service.getValue().token).toBe(validToken)
+                  });
+                });
+                
+              });
+
+            }),
+            ```               
+          </section>
+        </section>
+
+        <section data-info="Hands on! Test Cache Service">
+          <h2>Hands on!</h2>
+          <div>
+            Let's try to test our `CacheService`
+          </div>
+        </section>
+
+        <section data-markdown>
+          * Async/FakeAsync
+          * Mocking environment
+            * setup
+            * clean-up
+            * ngOnDestroy / (takeOne?)!
+            * unsubscribe
+            * helper function for data (ex: getResourceFull())
+          * Practice, test Shared Debugging Service. // <-- local storage
+
+          * Component testing
+            * render with testing library
+
+          * Common pitfalls
+            * Do not use Slashes on your test names, it will break debugging.
+            * If you are using Services or components that render content outside your component (like popovers), you have to manually clean them! Usually `document.getElementsByTagName('body')[0].innerHTML = '';`
+            * Create a wrong green test because “once()” is missing on the verify call
+
+          </section>
 			</div>
 		</div>
 
@@ -25,6 +387,7 @@
 		<script src="plugin/notes/notes.js"></script>
 		<script src="plugin/markdown/markdown.js"></script>
 		<script src="plugin/highlight/highlight.js"></script>
+		<script src="plugin/zoom/zoom.js"></script>
 		<script>
 			// More info about initialization & config:
 			// - https://revealjs.com/initialization/
@@ -33,7 +396,7 @@
 				hash: true,
 
 				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealZoom ]
 			});
 		</script>
 	</body>
