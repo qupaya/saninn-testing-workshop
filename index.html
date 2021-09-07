@@ -8,7 +8,7 @@
 
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+		<link rel="stylesheet" href="dist/theme/night.css">
 
 		<!-- Theme used for syntax highlighted code -->
 		<link rel="stylesheet" href="plugin/highlight/monokai.css">
@@ -16,6 +16,13 @@
 
     <style>
       :root {
+        --r-link-color: rgba(252,0,84, 1);
+        --r-selection-background-color: rgb(226 0 76); 
+        --r-link-color-hover: #ff3f7f;
+    /* --r-link-color-dark: #d08a1d;
+    --r-link-color-hover: #f3d7ac; */
+    /* --r-selection-background-color: #e7ad52; */
+
         --r-main-font-size: 30px;
         /* --r-heading1-size: 3em;
         --r-heading2-size: 2em;
@@ -30,6 +37,7 @@
 
         <section>
           <h1>Testing Workshop</h1>
+          <div>🧑🏽‍💻 👩🏻‍💻 👨🏼‍💻 👩🏿‍💻 👩🏼‍💻 🧑🏻‍💻</div>
         </section>
 
         <section>
@@ -49,22 +57,24 @@
             </div>
           </div>
         </section>
-        <section>
+        <section data-auto-animate>
           <h2>Why don't we want tests?</h2>
         </section>
-				<section>
+				<section data-auto-animate>
+          <h2>Why don't we want tests?</h2>
           <ul>
             <li>Takes the double (or triple) time. <br>
-                <small>Fixing repetitive regressions and manual testing take more time.</small>
+                <small class="fragment">Continually testing that the requirement work without bugs take more time.</small>
             </li>
-            <li>Do not prevent bugs <br>
-                <small>it prevent repeat the same bug</small>
+            <li>It does not prevent bugs.<br>
+                <small class="fragment">It prevent to repeat the same bug (regressions!)</small>
             </li>
-            <li>Costs more (developer time is 💸💸) <br>
-                <small>see 1. </small>
+            <li>Costs more (because developer time is 💸💸) <br>
+                <small class="fragment">see 1. + 2. 
+                  <span class="fragment"> ( code </span> <span class="fragment">👉🏼 see browser</span> <span class="fragment">👉🏼 code</span> <span class="fragment">👉🏼 see browser 2 times </span> <span class="fragment">👉🏼  ad infinitum)</span></small>
             </li>
-            <li>It is hard they break all the time! <br>
-                <small>This workshop! (and a lot of practice)</small>
+            <li>It is hard, They break all the time! <br>
+                <small class="fragment">This workshop! <span class="fragment">(and a lot of practice)</span></small>
             </li>
           </ul>
         </section>
@@ -97,39 +107,58 @@
 
           <section><h2>How to develop with tests?</h2></section>
 
-          <section><h3>After Development Testing 🤭</h3></section>
-          <section>
+          <section data-auto-animate><h3>After Development Testing 🤭</h3></section>
+          <section data-auto-animate>
+            <h3>After Development Testing 🤭</h3>
             <ul>
               <li>Tedious.<br>
-                <small>"My work is done! 🥳... oh wait... I still have to write the tests 😭".</small>
+                <small class="fragment">"My work is done! 🥳 <span class="fragment">... oh wait...</span> <span class="fragment">I still have to write the tests 😭".</span></small>
               </li>
               
               <li>Requires double/triple check. (Example)<br>
-                  <small>To prevent a green field of PASS tests, we have to make our tests fail.</small>  
+                  <small class="fragment"> We have to write the test, remove the production code, restore production code</small>
               </li>
 
               <li>"I will merge it and test it later"<br>
-                <small>`Later` is roughly equivalent to 2512 years.</small> 
+                <small class="fragment">`Later` is roughly equivalent to 2512 years and 19 seconds.</small> 
               </li>
 
-              <li>Pressure problems -> Manager: Merge it and test it later.<br>
-                <small> Did I already said how much time `later` equals to?</small> 
+              <li>Pressure problems -> Manager: "Merge it now and test it later".<br>
+                <small class="fragment"> Did I already said how much time `later` equals to?</small> 
               </li>
+
             </ul>
           </section>
 
-          <section><h3>Test Driven Development 🥳</h3>
+          <section data-auto-animate><h3>Test Driven Development 🥳</h3>
             #TDD
           </section>
           
-          <section data-markdown>
-              * The test are done together with the implementation.
-              * Enables you find errors before they happen.
-              * Enables you to think before code.
-              
-              * Cons
+          <section data-auto-animate>
+            <h3>Test Driven Development 🥳</h3>
+            <div class="no-markers">
+              <ul>
+                <li class="fragment">✅ The test are done together with the implementation.</li>
+                <li class="fragment">✅ Enables you find errors before they happen.</li>
+                <li class="fragment">✅ Enables you to think before code.</li>
+                <li class="fragment">✅ Removes repetitive manual checks.</li>
+                <li class="fragment">✅ Makes the code future proof.</li>
+            </ul>
+            </div>
+            <div class="fragment">
+              <hr />
+
+              <h4>Contras</h4>
+              <div data-markdown>
+                * Hard to start (like going to the gym 💪).
                 * It takes time until it feels naturally to you.
-                * You have to take an stand and defend the time they take when given your time estimations
+                * You have to take an stand and defend the time they take when given your time estimations.
+
+              </div>
+            </div>
+
+
+
           </section>
         </section>
 
@@ -153,37 +182,39 @@
                 public get(id: number): SomeInterface | null;
 
                 // ----
+
                 test('saved locally', () => {
-                  const wantedId = 888;
-                  
-                  service.save({
+                  const objectToSave = {
                     id: wantedId,
                     data: 'Hello I am some object'
-                  });
+                  }
+                  
+                  service.save(objectToSave);
 
-                  const savedObject = service.get(wantedId)
-                  expect(savedObject).toBeDefined();
+                  const savedObject = service.get(objectToSave.id)
+                  expect(savedObject).toEqual(objectToSave);
                 });
                 ```
               </div>
 
               <div class="fragment fragment-replace-item" data-markdown>
                 ```typescript []
-                // Service with Backend dependencies
+                // Service with dependencies (For example a Backend Service)
                 public save(objectToSave: SomeInterface): void;
                 public get(id: number): SomeInterface | null;
 
                 // ----
+
                 test('saved locally', () => {
-                  const wantedPayload: SomeInterface = {
+                  const objectToSave = {
                     id: wantedId,
                     data: 'Hello I am some object'
                   }
                   
-                  service.save(wantedPayload);
+                  service.save(objectToSave);
 
                   const savedObject = service.get(wantedId);
-                  verify(SomeDependencyMock.save(objectContaining(wantedPayload))).once();
+                  verify(SomeBackendDependencyMock.save(objectContaining(objectToSave))).once();
                 });
                 ```
               </div>
@@ -192,23 +223,82 @@
 
           <section data-info="What to test on components">
             <div data-markdown>
-              ## Test on Components
+              ## Dummy Components Testing
                 1. Test visible elements.
                 1. Test element changes.
-                1. External fire and forget requests.
+                1. External fire and forget requests. (Shallow test)
+                1. `@Output` events
             </div>
             
             <hr />
-            <div class="fragment-replace-container">
-              <div class="fragment fragment-replace-item" data-markdown>
+            <div class="fragment-replace-container"> 
+              <div class="fragment fade-in-then-out fragment-replace-item" data-markdown>
                 ```typescript []
-                  Some example here
+                
+                @Component({
+                  selector: 'app-test',
+                  templateUrl: './test.component.html',
+                  styleUrls: ['./test.component.css']
+                })
+                export class TestComponent  {
+                  activeFilter = '';
+                
+                  @Output() filter = new EventEmitter();
+                
+                  emit(value: string): void {
+                    this.filter.emit(value);
+                  }
+
+                  // ...some more code here
+                }
+                  
                 ```
+              </div>
+
+              <div class="fragment fade-in-then-out fragment-replace-item" >
+                <div class="side-to-side-code-image" data-markdown>
+                  <script type="text/template">
+                    ```html []
+                    <div>
+                      Active Filter: {{activeFilter}}
+                    </div>
+
+                    <div>
+                      <input [(ngModel)]="currentInput"/>
+                    </div>
+
+                    <div>
+                      <button (click)="emit(currentInput)">
+                        Filter Now
+                      </button>
+                    </div>
+                    ```
+                    ![Preview](./images/component-test-demo-view-1.png "Title")
+                  </script>
+                </div>
               </div>
 
               <div class="fragment fragment-replace-item" data-markdown>
                 ```typescript []
-                Some example here
+                describe('TestComponent', () => {
+                  
+                  describe('When an active filter exist', () => {
+
+                    test('the active filter should be visible when defined', async () => {
+                      const activeFilter = 'Age';
+                      await render(TestComponent, {
+                        componentProperties: {
+                          activeFilter
+                        },
+                      });
+  
+                      const activeFilterElement = await screen.getByText(activeFilter);
+  
+                      expect(activeFilterElement).toBeDefined();
+                    });
+
+                  });
+                });
                 ```
               </div>
             </div> 
@@ -216,19 +306,58 @@
 
         </section>
 
+        <!-- *************************************************************************** -->
+        <!-- *************************************************************************** -->
+        <!-- *************************************************************************** -->
+        <!-- *************************************************************************** -->
         <section data-info="My Approach">
-          <section><h2>My Approach to unit (service) test</h2></section>
-          <section data-markdown>
-            ### Preparation
-              * Each public function (API) goes into their own describe block.
-              * Layout the general expectations of your function using `test.todo`
-                  * Sad Path 
-                  * Happy Path
-              * Group test with the same environments
+          <section>
+            <h2>My Approach to Unit-Tests</h2>
+            (Angular Service Tests)
+          </section>
 
-            Notes: 
-              * Some people like to start with the happy path.
-              * Some people does not like to group similar requirements on before each.
+          <section data-auto-animate>
+            <h3>Preparation</h3>
+          </section>
+          <section data-auto-animate>
+            <h3>Preparation</h3>
+            <ul>
+              <li>Each public function (API) goes into their own describe block.</li>
+              <li class="fragment">Layout the general expectations using <code>test.todo()</code>.
+                <ul>
+                  <br>
+                    <li class="fragment">Sad Path<small><sup>*</sup></small>
+                      <small style="display: block;">
+                        <ul>
+                          <li>Developer Task, think about when should my call should not work.</li>
+                          <li>We always do this, even without unit tests.</li>
+                        </ul>
+                      </small>
+                      <br>
+                      
+                    </li>
+                    <li class="fragment">Happy Path
+                      <small style="display: block;">
+                        <ul>
+                          <li>The requirements of the task (Jira ticket?).</li>
+                        </ul>
+                    </small>
+                    </li>
+                  <br>
+
+                </ul>
+              </li>
+              <li class="fragment">Group test with the same environments.</li>
+            </ul>
+            <br>
+            <br>
+            <br>
+              
+            <small style="display: block; text-align: right;" class="fragment">
+                <div>(*) Some people like to start with the happy path.</div>
+                <!-- <div>(**) Some people does not like to group similar requirements on before each.</div> -->
+            </small>
+              
           </section>
 
           <section data-markdown>
@@ -250,13 +379,17 @@
             ```               
           </section>
 
-          <section data-markdown>
-            ### Implementation (part 2)
-              * Define the code that makes your first `test.todo` fail.
-              * Write the implementation code until your test pass.
-              * Repeat 🔁
+          <section>
+            <h3>Implementation</h3>
+            <ul>
+              <li>Define the code that makes your first <code>test.todo()</code> fail.</li>
+              <li>Write the implementation code until your test pass.</li>
+              <li>Repeat 🔁</li>
+            </ul>
+            <br>
+            <br>
             
-
+            <div class="fragment">Refactor??</div>
           </section>
 
           <section data-markdown>
@@ -293,13 +426,18 @@
           </section>
 
           <section data-markdown>
-            ```typescript [4-11]
+            ```typescript [7-14]
             @Injectable({
               providedIn: 'root',
             })
             export class SharedDebuggingService {
 
               public readonly saveResource(resource: Resource){
+                /*
+                  * As example here resource has an optional id.
+                  * If the id where not optional, this should not be tested
+                  * because typescript will complain for us
+                  */
                 if(!resource.id) {
                   throw new Error('No Id was found')
                 }
@@ -310,23 +448,29 @@
           </section>
 
 
-          <section data-markdown>
-            ### Implementation (part 2)
-              * Same mock configurations are group on `beforeEach` calls.
-              * Optional: group environment details on function with descriptive names
+          <section>
+            <h3>Implementation (part 2)</h3>
+            <ul>
+              <li>Same mock configurations are defined together on <code>beforeEach()</code>.</li>
+              <li>Group environment details on function with descriptive names<small><sup>*</sup></small>.</li>
+            </ul>
+            <br><br>
 
-            Notes: 
-              * Some people does not like to group environments/requirements on before each.
+              <small style="display: block; text-align: right;" class="fragment">
+                <div>* Some people does not like to group environments/requirements on <code class="inline">beforeEach()</code>.</div>
+                <!-- <div>(**) Some people does not like to group similar requirements on before each.</div> -->
+            </small>
           </section>
 
           <section data-markdown>
-            ```typescript [2-3]
+            ```typescript []
             describe('My Service', () => {
 
               describe('#loadValueFromBackend', () => {
 
                 describe('loading when the service is initialized', () => {
                   const validToken = 'I Am valid 🤓';
+
 
                   function initializeService(): void {
                     service.start();
@@ -339,10 +483,12 @@
 
                   test('loads the responseFromBackEnd', () => {
                     // Arrange
-                    initializeService();
+                    initializeService(); // Or the full function
 
+                    // Act
                     service.loadValueFromBackend();
 
+                    // Assert
                     expect(service.getValue().token).toBe(validToken)
                   });
                 });
@@ -355,13 +501,18 @@
         </section>
 
         <section data-info="Hands on! Test Cache Service">
-          <h2>Hands on!</h2>
-          <div>
+          <h2>Hands on 1!</h2>
+          <div data-markdown>
             Let's try to test our `CacheService`
+          </div>
+
+          <div data-markdown>
+            optional: `EnvironmentService`
           </div>
         </section>
 
         <section data-markdown>
+          * Test Naming/Describe
           * Async/FakeAsync
           * Mocking environment
             * setup
@@ -369,7 +520,7 @@
             * ngOnDestroy / (takeOne?)!
             * unsubscribe
             * helper function for data (ex: getResourceFull())
-          * Practice, test Shared Debugging Service. // <-- local storage
+          * Practice, test Environment Service. // <-- local storage
 
           * Component testing
             * render with testing library

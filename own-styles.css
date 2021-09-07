@@ -9,3 +9,31 @@
   width: 100%;
   height: 100%;
 }
+
+.no-markers li::marker{
+  display: none;
+  content: '';
+}
+
+.side-to-side-code-image {
+  display: flex;
+  justify-content: space-between;
+}
+
+.side-to-side-code-image > * {
+  display: block;
+  width: 50% !important;
+  height: 100%;
+}
+
+.side-to-side-code-image img {
+  margin: 0;
+}
+
+
+li code, code.inline, p > code{
+  background: #940000;
+    padding: 0 0.3em;
+    background: #940000;
+    border-radius: 0.3em;
+}
