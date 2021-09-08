@@ -690,39 +690,39 @@
                 name: string
               }
               ```
-          </div>
+            </div>
 
-          <div class="fragment" data-markdown>
-            ```
-            export class MyService {
-              doSomething(value: MyNeededObject){}
-            }
-            ```
-          </div>
-          
-          <div class="fragment" data-markdown>
-            ```typescript [|2-5,12-15|3,13]
-            test('do something does something', () => {
-              const value: MyNeededObject = {
-                value: 4;
-                name: 'Hello'
-              };
+            <div class="fragment" data-markdown>
+              ```
+              export class MyService {
+                doSomething(value: MyNeededObject){}
+              }
+              ```
+            </div>
+            
+            <div class="fragment" data-markdown>
+              ```typescript [|2-5,12-15|3,13]
+              test('do something does something', () => {
+                const value: MyNeededObject = {
+                  value: 4;
+                  name: 'Hello'
+                };
 
-              service.doSomething(value);
-              // expect()
-            });
+                service.doSomething(value);
+                // expect()
+              });
 
-            test('do something does not do something when value is negative', () => {
-              const value: MyNeededObject = {
-                value: -1;
-                name: 'Hello'
-              };
+              test('do something does not do something when value is negative', () => {
+                const value: MyNeededObject = {
+                  value: -1;
+                  name: 'Hello'
+                };
 
-              service.doSomething(value);
-              // expect()
-            });
-            ```
-          </div>
+                service.doSomething(value);
+                // expect()
+              });
+              ```
+            </div>
 
           </section>
           
@@ -735,57 +735,49 @@
                 name: string
               }
               ```
-          </div>
+            </div>
 
-          <div data-markdown>
-            ```
-            export class MyService {
-              doSomething(value: MyNeededObject){}
-            }
-            ```
-          </div>
-          
-          <div class="fragment" data-markdown>
-            ```typescript []
-            let instances = 0;
-            export getMyNeededObjectStub(config?: Partial<MyNeededObject>): MyNeededObject {
-              instances++;
-              return {
-                value: instances,
-                name: `name for ${instances}`,
-                ...config // replace the default values with our config if given
+            <div data-markdown>
+              ```
+              export class MyService {
+                doSomething(value: MyNeededObject){}
               }
-            }
-            ```
-          </div>
-
-          <div class="fragment" data-markdown>
-            ```typescript []
-            test('do something does not do something when value is negative', () => {
-              const value = getMyNeededObjectStub({value: -1})
-              service.doSomething(value);
-              //expect()
-            });
-
-            test('do something does something', () => {
-              const value = getMyNeededObjectStub();
-              service.doSomething(value);
-              // expect()
-            });
-            ```
-          </div>
-
+              ```
+            </div>
             
+            <div class="fragment" data-markdown>
+              ```typescript []
+              let instances = 0;
+              export getMyNeededObjectStub(config?: Partial<MyNeededObject>): MyNeededObject {
+                instances++;
+                return {
+                  value: instances,
+                  name: `name for ${instances}`,
+                  ...config // replace the default values with our config if given
+                }
+              }
+              ```
+            </div>
+
+            <div class="fragment" data-markdown>
+              ```typescript []
+              test('do something does not do something when value is negative', () => {
+                const value = getMyNeededObjectStub({value: -1})
+                service.doSomething(value);
+                //expect()
+              });
+
+              test('do something does something', () => {
+                const value = getMyNeededObjectStub();
+                service.doSomething(value);
+                // expect()
+              });
+              ```
+            </div>
           </section>
         </section>
 
         <section data-markdown class="wrong-box">
-          * Mocking environment
-            * setup
-            * clean-up
-            * ngOnDestroy / (takeOne?)!
-            * unsubscribe
-            * helper function for data (ex: getResourceFull())
 
           * Component testing
             * render with testing library
