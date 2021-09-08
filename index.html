@@ -577,18 +577,22 @@
             <div data-markdown>
               ```typescript []
               export class MyService {
+
                 private currentValue$$ = new BehaviorSubject(0)
                 currentValue$ = this.currentValue$$.pipe(debounceTime(100));
 
                 setValue(value: number){
                   this.currentValue$$.next(value);
                 }
+
               }
               ```
             </div>
-
+            </section>
+            <section  data-auto-animate>
+              <h3>Async/FakeAsync</h3>
             <div data-markdown>
-              ```typescript []
+              ```typescript [|1-8|9-13|15|17-19]
               test('#setValue updates the current value to our observers', fakeAsync(() => {
                 const subscription = new Subscription();
                 const service = new MyService();
@@ -603,11 +607,10 @@
                 tick(100); // Run time by 100 ms
                 expect(currentValue).toBe(0); // The subscription was called once!
 
-                service.setValue(wantedValue); // <-- Act!
+                service.setValue(wantedValue);
 
                 expect(currentValue).toBe(0); // The new value is not yet emit
                 tick(100); // Run time by 100 ms
-              
                 expect(currentValue).toBe(wantedValue);// The new value is there!
               }));
               ```
@@ -643,14 +646,146 @@
           </section>
         </section>
 
-        <section data-markdown>
+        <section data-info="Test/Mocking environment">
+          <section data-auto-animate="">
+            <h2>Test/Mocking Environment</h2>
+            <p>As the "subjects under tests" become more complex so do our tests</p>
+          </section>
+
+          <section data-auto-animate data-info="mocking items list">
+            <h3>Test/Mocking Environment</h3>
+            <ul>
+              <li>Use an "can be created" test to verify your initial mocks work.</li>
+              <li>If you need to test observables, group them in a <code class="inline">Subscription</code> object.</li>
+              <li>Use an global <code class="inline">beforeEach()</code> to define needed mock call values.
+                <ul>
+                  <li>Initialize subscription objects </li>
+                  <li>Define Mocks default return values.<br>
+                    <small>ie: <code class="inline">when(MyMock.myObservable$).thenReturn(aLocalSubject$$)</code></small></li>
+                </ul>
+              </li>
+              
+              <li>Use an global <code class="inline">afterEach()</code> for clean up.
+                <ul>
+                  <li>Unsubscribe from subscription objects</li>
+                  <li>Reset your mocks (<code class="inline">reset(mock1, mock2...)</code> ).</li>
+                  <li>If your subject under test implements the <code class="inline">ngOnDestroy</code> life cycle, call it.</li>
+                  
+                </ul>
+            </li>
+            </ul>
+          </section>
+
+          <section data-auto-animate data-info="mocking example list">
+            <h3>Test/Mocking Environment</h3>
+            full example of mocking clean up here TODO:
+          </section>
+
+          <section data-auto-animate data-info="helper functions example without helper">
+            <h4>Tip: Use helper functions to reduce noise and centralize stubs</h4>
+            <div class="fragment" data-markdown>
+              ```
+              interface MyNeededObject {
+                value: number;
+                name: string
+              }
+              ```
+          </div>
+
+          <div class="fragment" data-markdown>
+            ```
+            export class MyService {
+              doSomething(value: MyNeededObject){}
+            }
+            ```
+          </div>
+          
+          <div class="fragment" data-markdown>
+            ```typescript [|2-5,12-15|3,13]
+            test('do something does something', () => {
+              const value: MyNeededObject = {
+                value: 4;
+                name: 'Hello'
+              };
+
+              service.doSomething(value);
+              // expect()
+            });
+
+            test('do something does not do something when value is negative', () => {
+              const value: MyNeededObject = {
+                value: -1;
+                name: 'Hello'
+              };
+
+              service.doSomething(value);
+              // expect()
+            });
+            ```
+          </div>
+
+          </section>
+          
+          <section data-auto-animate data-info="helper functions example WITH helper">
+            <h4>Tip: Use helper functions to reduce noise and centralize stubs</h4>
+            <div data-markdown>
+              ```
+              interface MyNeededObject {
+                value: number;
+                name: string
+              }
+              ```
+          </div>
+
+          <div data-markdown>
+            ```
+            export class MyService {
+              doSomething(value: MyNeededObject){}
+            }
+            ```
+          </div>
+          
+          <div class="fragment" data-markdown>
+            ```typescript []
+            let instances = 0;
+            export getMyNeededObjectStub(config?: Partial<MyNeededObject>): MyNeededObject {
+              instances++;
+              return {
+                value: instances,
+                name: `name for ${instances}`,
+                ...config // replace the default values with our config if given
+              }
+            }
+            ```
+          </div>
+
+          <div class="fragment" data-markdown>
+            ```typescript []
+            test('do something does not do something when value is negative', () => {
+              const value = getMyNeededObjectStub({value: -1})
+              service.doSomething(value);
+              //expect()
+            });
+
+            test('do something does something', () => {
+              const value = getMyNeededObjectStub();
+              service.doSomething(value);
+              // expect()
+            });
+            ```
+          </div>
+
+            
+          </section>
+        </section>
+
+        <section data-markdown class="wrong-box">
           * Mocking environment
             * setup
             * clean-up
             * ngOnDestroy / (takeOne?)!
             * unsubscribe
             * helper function for data (ex: getResourceFull())
-          * Practice, test Environment Service. // <-- local storage
 
           * Component testing
             * render with testing library
