@@ -38,7 +38,7 @@ li code, code.inline, p > code{
     border-radius: 0.3em;
 }
 
-.wrong-box, .correct-box {
+.wrong-box, .correct-box, .info-box {
   border-radius: 0.3em;
   padding: 0.5em;
   border-width: 1px;
@@ -53,6 +53,11 @@ li code, code.inline, p > code{
 .correct-box {
   border-color: rgb(21, 150, 62);
   background-color: rgb(21 150 62 / 74%);
+}
+
+.info-box {
+  border-color: #0009ff;
+  background-color: #2b2bb6;
 }
 
 .wrong-box + .correct-box,

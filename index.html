@@ -346,6 +346,16 @@
                 </div>
               </ul>
             </div>
+
+            <div class="fragment" style="position: absolute; top:0; left: 0; width:100%; height: 100%; background: rgb(17 17 17 / 93%);">
+              <div style="display: flex; justify-content: center; align-items: center; width:100%; height: 100%;">
+                <div class="info-box" style="width: 70%; padding: 1em;" data-markdown>
+                  Using technical terms on services (like `emit`) is sometimes needed. Do not fight it. 🤓
+                </div>
+              </div>
+              
+            </div>
+            
               
                
           
@@ -560,8 +570,80 @@
           </div>
         </section>
 
+        <section data-info="Async/FakeAsync">
+          <section><h2>Async/FakeAsync</h2></section>
+          <section  data-auto-animate>
+            <h3>Async/FakeAsync</h3>
+            <div data-markdown>
+              ```typescript []
+              export class MyService {
+                private currentValue$$ = new BehaviorSubject(0)
+                currentValue$ = this.currentValue$$.pipe(debounceTime(100));
+
+                setValue(value: number){
+                  this.currentValue$$.next(value);
+                }
+              }
+              ```
+            </div>
+
+            <div data-markdown>
+              ```typescript []
+              test('#setValue updates the current value to our observers', fakeAsync(() => {
+                const subscription = new Subscription();
+                const service = new MyService();
+                const wantedValue = 19;
+                let currentValue;
+                subscription.add(
+                  service.currentValue$.subscribe(value => currentValue = value)
+                );
+                expect(currentValue).toBe(undefined); // the subscription did no run
+                tick();
+                expect(currentValue).toBe(undefined); // the subscription still not runs
+                tick(100); // Run time by 100 ms
+                expect(currentValue).toBe(0); // The subscription was called once!
+
+                service.setValue(wantedValue); // <-- Act!
+
+                expect(currentValue).toBe(0); // The new value is not yet emit
+                tick(100); // Run time by 100 ms
+              
+                expect(currentValue).toBe(wantedValue);// The new value is there!
+              }));
+              ```
+            </div>
+          </section>
+        
+          <section data-auto-animate>
+            <h3>Async/FakeAsync</h3>
+
+            <div class="wrong-box">
+              <h4>This tests passes, but it does not test anything</h4>
+              <div data-markdown>
+                ```typescript [|10]
+                test('#setValue updates the current value to our observers', () => {
+                  const subscription = new Subscription();
+                  const service = new MyService();
+                  const wantedValue = 19;
+                  
+                  service.setValue(wantedValue);
+                
+                  subscription.add(
+                    service.currentValue$.subscribe(value => {
+                      expect(value).toBe(wantedValue); // this is never called
+                    })
+                  );
+                });
+                ```
+              </div>
+            </div>
+
+            <br><br>
+            <div class="fragment"><small>Tip: You can use <code class="inline">expect.assertions(n)</code> to specify that your test has to call <code class="inline">n</code> assertions</div></small>
+          </section>
+        </section>
+
         <section data-markdown>
-          * Async/FakeAsync
           * Mocking environment
             * setup
             * clean-up
