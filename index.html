@@ -369,7 +369,7 @@
         <!-- *************************************************************************** -->
         <!-- *************************************************************************** -->
         <!-- *************************************************************************** -->
-        <section data-info="My Approach">
+        <section data-info="My Approach to Services">
           <section>
             <h2>My Approach to Unit-Tests</h2>
             (Angular Service Tests)
@@ -777,6 +777,44 @@
           </section>
         </section>
 
+        <!-- *************************************************************************** -->
+        <!-- *************************************************************************** -->
+        <!-- *************************************************************************** -->
+        <!-- *************************************************************************** -->
+        <section data-info="component testing">
+          <section data-auto-animate="">
+            <h2>My Approach to Component Testing</h2>
+            <small>(Angular Dummy/Presentation Components)</small>
+          </section>
+            
+          <section data-auto-animate>
+            <h3>Preparation</h3>
+          </section>
+          <section data-auto-animate>
+            <h3>Preparation</h3>
+            <ul>
+              <li>The same rules about the happy/sad path of services testing are to be follow here. </li>
+              <li>The same rules about the group of same environments are to be follow here. </li>
+              <li>Try to reproduce the same steps the end user (or your component consumer) will do.</li>
+            </ul>
+            <br>
+            <br>
+            <br>
+              
+            <small style="display: block; text-align: right;" class="fragment">
+                <div>(*) With component testing, you will need to add some HTML content so you use them in your tests.</div>
+                <!-- <div>(**) Some people does not like to group similar requirements on before each.</div> -->
+            </small>
+              
+          </section>
+
+          <section>
+            <div class="info-box">
+              Let us open the Select component in UI Lib 🧑🏽‍💻
+            </div>
+          </section>
+        </section>
+
         <section data-markdown class="wrong-box">
 
           * Component testing
@@ -786,8 +824,9 @@
             * Do not use Slashes on your test names, it will break debugging.
             * If you are using Services or components that render content outside your component (like popovers), you have to manually clean them! Usually `document.getElementsByTagName('body')[0].innerHTML = '';`
             * Create a wrong green test because “once()” is missing on the verify call
+            * You have to find the button inside components that trigger some `clicked` events
 
-          </section>
+        </section>
 			</div>
 		</div>
 
