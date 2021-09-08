@@ -1,7 +1,7 @@
 {
-  "name": "Saninn's Testing Workshop",
+  "name": "testing_workshop",
   "version": "4.1.3",
-  "description": "A Workshop about Angular Testing",
+  "description": "An Opinionated Workshop about Angular Testing",
   "homepage": "https://www.qupaya.com",
   "main": "dist/reveal.js",
   "module": "dist/reveal.esm.js",

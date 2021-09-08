@@ -306,6 +306,55 @@
 
         </section>
 
+        <section>
+          <section><h2>Naming!</h2></section>
+
+          <section>
+            <div class="wrong-box">
+              <h3>Don't</h3>
+                <ul>
+                  <li>Use one word descriptions (except for API function names).</li>
+                  <li>Be too general (ie "should work").</li>
+                  <li>Use too many technical terms (Array, Button, Error, etc)</li>
+                </ul>
+                <div data-markdown>
+                  ```typescript []
+                  describe('#Product', () => {
+                    test('can be selected');
+                  })
+                  ```
+              </div>
+            </div>
+  
+            
+            <div class="fragment correct-box">
+              <h3>Do</h3>
+              <ul>
+                <li>Use specific names for public/api functions while grouping.</li>
+                <li>Describe in a non technical way your environment.</li>
+                <li>Provide as much context as possible to your fellow developers.</li>
+  
+                <div data-markdown>
+                  ```typescript []
+                    describe('#myPublicServiceFunction', () => {})
+
+                    describe('when the resource is selected for deletion', () => {
+                      test('is marked with a red tick', () => {});
+                      test('their name is added to the "selected resources" box', () => {});
+                    });
+                  ```
+                </div>
+              </ul>
+            </div>
+              
+               
+          
+  
+          </section>
+        </section>
+        
+
+
         <!-- *************************************************************************** -->
         <!-- *************************************************************************** -->
         <!-- *************************************************************************** -->
@@ -347,7 +396,7 @@
 
                 </ul>
               </li>
-              <li class="fragment">Group test with the same environments.</li>
+              <li class="fragment">Group tests with the same environment(s).</li>
             </ul>
             <br>
             <br>
@@ -512,7 +561,6 @@
         </section>
 
         <section data-markdown>
-          * Test Naming/Describe
           * Async/FakeAsync
           * Mocking environment
             * setup
