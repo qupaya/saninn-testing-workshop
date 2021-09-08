@@ -42,18 +42,14 @@
 
         <section>
           <h2>Saninn Salas Díaz</h2>
-          <div>
+          <div class="presentation">
             <div class="avatar">
-
+              <img src="images/saninn.jpg" />
             </div>
             <div class="details">
-              Senior Software Developer @ qupaya technologies GmbH 
-              <!-- <ul>
-                <li>Senior Software Developer @ qupaya technologies GmbH </li>
-                <li>
-                  
-                </li>
-              </ul> -->
+              <p>Senior Software Developer <code class="inline">@</code> qupaya technologies GmbH </p>
+              <p ><a class="social-media" href="http://www.twitter.com/SaninnSalas"><img src="images/twitter-badge.png" alt="Follow me on Twitter" class="twitter-badge"/> @SaninnSalas</a></p>
+
             </div>
           </div>
         </section>
@@ -100,8 +96,13 @@
               Smart vs Presentation Components</a>
           </small>
         </div>
+
+        <aside class="notes">
+          Tip: Dummy components can also have local provider services
+        </aside>
         </section>
 
+        
         <!-- Tip: Dummy components can also have local provider services 😉 -->
         <section data-info="How to Develop With Tests Vertical">
 
@@ -115,8 +116,8 @@
                 <small class="fragment">"My work is done! 🥳 <span class="fragment">... oh wait...</span> <span class="fragment">I still have to write the tests 😭".</span></small>
               </li>
               
-              <li>Requires double/triple check. (Example)<br>
-                  <small class="fragment"> We have to write the test, remove the production code, restore production code</small>
+              <li>Requires double/triple check.<br>
+                  <small class="fragment"> We have to write the test, remove the production code, let it fail, restore production code, let it pass.</small>
               </li>
 
               <li>"I will merge it and test it later"<br>
@@ -138,7 +139,7 @@
             <h3>Test Driven Development 🥳</h3>
             <div class="no-markers">
               <ul>
-                <li class="fragment">✅ The test are done together with the implementation.</li>
+                <li>✅ The test are done together with the implementation.</li>
                 <li class="fragment">✅ Enables you find errors before they happen.</li>
                 <li class="fragment">✅ Enables you to think before code.</li>
                 <li class="fragment">✅ Removes repetitive manual checks.</li>
@@ -146,14 +147,16 @@
             </ul>
             </div>
             <div class="fragment">
+              <br>
               <hr />
 
               <h4>Contras</h4>
-              <div data-markdown>
-                * Hard to start (like going to the gym 💪).
-                * It takes time until it feels naturally to you.
-                * You have to take an stand and defend the time they take when given your time estimations.
-
+              <div>
+                <ul>
+                  <li class="fragment">Hard to start (like going to the gym 💪).</li>
+                  <li class="fragment">It takes time until it feels naturally to you.</li>
+                  <li class="fragment">You have to take an stand and defend the time they take when given your time estimations.</li>
+                </ul>
               </div>
             </div>
 
@@ -419,29 +422,36 @@
               
           </section>
 
-          <section data-markdown>
-            ```typescript [2-3]
-            describe('My Service', () => {
+          <section data-auto-animate="">
+            <h3>Preparation</h3>
+            <div data-markdown>
+              ```typescript []
+              describe('My Service', () => {
+  
+                describe('#saveResource', () => {
 
-              describe('#saveResource', () => {
-                test.todo('throw an error when the resource does not have any id');
-                test.todo('return false if the resource was already saved');
+                  test.todo('throw an error when the resource does not have any id');
+                  test.todo('return false if the resource was already saved');
+  
+                  describe('resource with correct form', () => {
 
-                describe('resource with correct form', () => {
-                  test.todo('returns true');
-                  test.todo('saves the resource in backend');
+                    test.todo('returns true');
+                    test.todo('saves the resource in backend');
+
+                  });
+                  
                 });
-                
+  
               });
+              ```               
+            </div>
 
-            })
-            ```               
           </section>
 
-          <section>
+          <section data-auto-animate>
             <h3>Implementation</h3>
             <ul>
-              <li>Define the code that makes your first <code>test.todo()</code> fail.</li>
+              <li>Define the test code that makes your first <code>test.todo()</code> fail.</li>
               <li>Write the implementation code until your test pass.</li>
               <li>Repeat 🔁</li>
             </ul>
@@ -451,40 +461,46 @@
             <div class="fragment">Refactor??</div>
           </section>
 
-          <section data-markdown>
-            ```typescript [3-18]
-            describe('My Service', () => {
-
-              let service: MyService;
-
-              beforeEach(() => {
-                service = new MyService();
-              });
-
-              describe('#saveResource', () => {
-
-                test('throw an error when the resource does not have any id', () => {
-                  const myResource: Resource = {
-                    name:
-                  }
-
-                  expect(() => service.saveResource(myResource)).toThrow();
+          <section data-auto-animate>
+            <h3>Test Code</h3>
+            <div class="no-max-height-code" data-markdown>
+              ```typescript [3-18]
+              describe('My Service', () => {
+  
+                let service: MyService;
+  
+                beforeEach(() => {
+                  service = new MyService();
                 });
-
-                test.todo('return false if the resource was already saved');
-
-                describe('resource with correct form', () => {
-                  test.todo('returns true');
-                  test.todo('saves the resource in backend');
+  
+                describe('#saveResource', () => {
+  
+                  test('throw an error when the resource does not have any id', () => {
+                    const myResource: Resource = {
+                      name:
+                    }
+  
+                    expect(() => service.saveResource(myResource)).toThrow();
+                  });
+  
+                  test.todo('return false if the resource was already saved');
+  
+                  describe('resource with correct form', () => {
+                    test.todo('returns true');
+                    test.todo('saves the resource in backend');
+                  });
+                  
                 });
-                
-              });
-
-            })
-            ```               
+  
+              })
+              ```    
+            </div>
+                       
           </section>
 
-          <section data-markdown>
+          <section data-auto-animate>
+            <h3>Production Code</h3>
+            <div data-markdown>
             ```typescript [7-14]
             @Injectable({
               providedIn: 'root',
@@ -503,7 +519,8 @@
               }
 
             }
-            ```               
+            ```         
+          </div>      
           </section>
 
 
@@ -521,41 +538,44 @@
             </small>
           </section>
 
-          <section data-markdown>
-            ```typescript []
-            describe('My Service', () => {
-
-              describe('#loadValueFromBackend', () => {
-
-                describe('loading when the service is initialized', () => {
-                  const validToken = 'I Am valid 🤓';
-
-
-                  function initializeService(): void {
-                    service.start();
-                    service.register('I do not know, something here');
-                  }
-
-                  beforeEach(() => {
-                    when(SomeServiceProviderMock.getToken()).thenReturn(validToken);
+          <section >
+            <div data-markdown class="no-max-height-code">
+              ```typescript []
+              describe('My Service', () => {
+  
+                describe('#loadValueFromBackend', () => {
+  
+                  describe('loading when the service is initialized', () => {
+                    const validToken = 'I Am valid 🤓';
+  
+  
+                    function initializeService(): void {
+                      service.start();
+                      service.register('I do not know, something here');
+                    }
+  
+                    beforeEach(() => {
+                      when(SomeServiceProviderMock.getToken()).thenReturn(validToken);
+                    });
+  
+                    test('loads the responseFromBackEnd', () => {
+                      // Arrange
+                      initializeService(); // Or the full function
+  
+                      // Act
+                      service.loadValueFromBackend();
+  
+                      // Assert
+                      expect(service.getValue().token).toBe(validToken)
+                    });
                   });
-
-                  test('loads the responseFromBackEnd', () => {
-                    // Arrange
-                    initializeService(); // Or the full function
-
-                    // Act
-                    service.loadValueFromBackend();
-
-                    // Assert
-                    expect(service.getValue().token).toBe(validToken)
-                  });
+                  
                 });
-                
-              });
-
-            }),
-            ```               
+  
+              }),
+              ```  
+            </div>
+                         
           </section>
         </section>
 
@@ -642,7 +662,9 @@
             </div>
 
             <br><br>
-            <div class="fragment"><small>Tip: You can use <code class="inline">expect.assertions(n)</code> to specify that your test has to call <code class="inline">n</code> assertions</div></small>
+            <div class="fragment">
+              <small>Tip: You can use <code class="inline">expect.assertions(n)</code> to specify that your test has to call <code class="inline">n</code> assertions</small>
+            </div>
           </section>
         </section>
 
@@ -656,20 +678,20 @@
             <h3>Test/Mocking Environment</h3>
             <ul>
               <li>Use an "can be created" test to verify your initial mocks work.</li>
-              <li>If you need to test observables, group them in a <code class="inline">Subscription</code> object.</li>
-              <li>Use an global <code class="inline">beforeEach()</code> to define needed mock call values.
+              <li class="fragment">If you need to test observables, group them in a <code class="inline">Subscription</code> object.</li>
+              <li class="fragment">Use an global <code class="inline">beforeEach()</code> to define needed mock call values.
                 <ul>
-                  <li>Initialize subscription objects </li>
-                  <li>Define Mocks default return values.<br>
+                  <li class="fragment">Initialize subscription objects. </li>
+                  <li class="fragment">Define Mocks default return values.<br>
                     <small>ie: <code class="inline">when(MyMock.myObservable$).thenReturn(aLocalSubject$$)</code></small></li>
                 </ul>
               </li>
               
-              <li>Use an global <code class="inline">afterEach()</code> for clean up.
+              <li class="fragment">Use an global <code class="inline">afterEach()</code> for clean up.
                 <ul>
-                  <li>Unsubscribe from subscription objects</li>
-                  <li>Reset your mocks (<code class="inline">reset(mock1, mock2...)</code> ).</li>
-                  <li>If your subject under test implements the <code class="inline">ngOnDestroy</code> life cycle, call it.</li>
+                  <li class="fragment">Unsubscribe from subscription objects.</li>
+                  <li class="fragment">Reset your mocks (<code class="inline">reset(mock1, mock2...)</code> ).</li>
+                  <li class="fragment">If your subject under test implements the <code class="inline">ngOnDestroy</code> life cycle, call it.</li>
                   
                 </ul>
             </li>
@@ -678,7 +700,37 @@
 
           <section data-auto-animate data-info="mocking example list">
             <h3>Test/Mocking Environment</h3>
-            full example of mocking clean up here TODO:
+            <div data-markdown class="no-max-height-code">
+              ```typescript []
+                describe('MyService', () => {
+                  const projectID = 6;
+                  const SomeServiceMock = mock(SomeService);
+                  const SpecialServiceMock = mock(SpecialService);
+                  const MOCKS = [SomeServiceMock, SpecialServiceMock];
+
+                  const localSubject$$ = new Subject();
+
+                  let service: MyService;
+
+                  beforeEach(() => {
+                    when(SpecialServiceMock.anObservableThatIsMappedInMyService$)
+                      .thenReturn(localSubject$$);
+
+                    service = new MyService(SomeServiceMock, SpecialServiceMock);
+                  });
+
+                  afterEach(() => {
+                    service.ngOnDestroy();
+                    reset(...MOCKS);
+                  });
+
+                  test('should be created', () => {
+                    expect(service).toBeDefined();
+                  });
+
+                });
+              ```
+            </div>
           </section>
 
           <section data-auto-animate data-info="helper functions example without helper">
@@ -815,17 +867,58 @@
           </section>
         </section>
 
-        <section data-markdown class="wrong-box">
+        <section data-auto-animate>
+          <h2>Common Pitfalls</h2>
+        </section>
 
-          * Component testing
-            * render with testing library
+        <section data-auto-animate>
+          <h2>Common Pitfalls</h2>
+          <ul>
+            <li class="fragment">Do not use Slashes on your test names, it will break debugging.</li>
+            <li class="fragment">If you are using Services or components that render content outside your component (like popovers), you have to manually clean them! 
+              <br>
+              <small> <br>Tip: 
+                <code class="inline language-typescript">
+                  document.getElementsByTagName('body')[0].innerHTML = ''
+                </code>
+                </small>
+                <br><br>
+            </li>
+            <li class="fragment">You can get False Positive (passing) tests when you forget to use write <code class="inline language-typescript">once()</code> in a <call class="inline">verify()</call> call.
+              <br>
+              <small  class="fragment">
+                <br>
+                <code class="inline language-typescript">verify(SomethingMock.someFunction())</code> 
+                👈🏼 missing <code class="inline">once()</code> / <code class="inline">twice()</code>/etc!!
+              </small>
+              <br><br>
+            </li>
+            <li class="fragment">You have to find the button inside components that trigger some `clicked` events.
+              <small  class="fragment">
+                <br>
+                <code class="inline language-typescript">screen.getByTestId('some-component-test-id').querySelector('button')</code> 
+                <br><br>
+              </small>
+            </li>
+            <li class="fragment">Feel free to add the ones you will <strong>definitively</strong> find here.</li>
+          </ul>
+        </section>
 
-          * Common pitfalls
-            * Do not use Slashes on your test names, it will break debugging.
-            * If you are using Services or components that render content outside your component (like popovers), you have to manually clean them! Usually `document.getElementsByTagName('body')[0].innerHTML = '';`
-            * Create a wrong green test because “once()” is missing on the verify call
-            * You have to find the button inside components that trigger some `clicked` events
+        <section data-info="Hands on! Test Cache Service">
+          <h2>Hands on 2!</h2>
 
+          <div data-markdown>
+            Let's try to test our `ChipComponent`
+          </div>
+
+          <div data-markdown>
+            optional: Continue the `SelectComponent` tests
+          </div>
+
+        </section>
+
+        <section>
+          <h2>The End</h2>
         </section>
 			</div>
 		</div>

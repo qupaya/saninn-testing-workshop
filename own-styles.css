@@ -64,3 +64,33 @@ li code, code.inline, p > code{
 .correct-box + .wrong-box {
 margin-top: 0.5em;
 }
+
+.presentation {
+  display: flex;
+}
+
+.presentation .details {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+}
+
+.twitter-badge {
+  width: 50px;
+  height: 50px;
+}
+
+.social-media{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar img {
+  border-radius: 100%;
+}
+
+.no-max-height-code code {
+  max-height: none !important;
+}
