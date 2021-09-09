@@ -172,7 +172,7 @@
             <div data-markdown>
               ## Angular Services Testing
                 1. Test public APIs function returns.
-                1. Public state changes.
+                1. **Public** state changes.
                 1. External fire and forget requests.
             </div>
             
@@ -216,7 +216,7 @@
                   
                   service.save(objectToSave);
 
-                  const savedObject = service.get(wantedId);
+                  
                   verify(SomeBackendDependencyMock.save(objectContaining(objectToSave))).once();
                 });
                 ```
@@ -477,7 +477,7 @@
   
                   test('throw an error when the resource does not have any id', () => {
                     const myResource: Resource = {
-                      name:
+                      name: 'Hello'
                     }
   
                     expect(() => service.saveResource(myResource)).toThrow();
@@ -533,9 +533,14 @@
             <br><br>
 
               <small style="display: block; text-align: right;" class="fragment">
-                <div>* Some people does not like to group environments/requirements on <code class="inline">beforeEach()</code>.</div>
-                <!-- <div>(**) Some people does not like to group similar requirements on before each.</div> -->
+                <div>
+                  * Some people does not like to group environments/requirements on <code class="inline">beforeEach()</code>.
+                </div>
+
             </small>
+            <aside class="notes">
+              group environments/requirements require the developer to know about how the class works. Cognitive load.
+            </aside>
           </section>
 
           <section >
@@ -632,6 +637,8 @@
                 expect(currentValue).toBe(0); // The new value is not yet emit
                 tick(100); // Run time by 100 ms
                 expect(currentValue).toBe(wantedValue);// The new value is there!
+
+                subscription.unsubscribe()
               }));
               ```
             </div>
@@ -690,11 +697,13 @@
               <li class="fragment">Use an global <code class="inline">afterEach()</code> for clean up.
                 <ul>
                   <li class="fragment">Unsubscribe from subscription objects.</li>
-                  <li class="fragment">Reset your mocks (<code class="inline">reset(mock1, mock2...)</code> ).</li>
+                  <li class="fragment">Reset your mocks (<code class="inline">reset(MyMock1, MyMock2...)</code> ).</li>
                   <li class="fragment">If your subject under test implements the <code class="inline">ngOnDestroy</code> life cycle, call it.</li>
                   
                 </ul>
             </li>
+            <li class="fragment">use Pascal-Case names for ts-mockito mock objects <br>
+              <small> <code class="inline">const SomeServiceMock = mock(SomeService)</code></small></li>
             </ul>
           </section>
 
@@ -715,8 +724,16 @@
                   beforeEach(() => {
                     when(SpecialServiceMock.anObservableThatIsMappedInMyService$)
                       .thenReturn(localSubject$$);
+                    
+                    when(SpecialServiceMock.getById(anything()))
+                      .thenReturn({hello: 'I am something'});
+                    when(SpecialServiceMock.getById(5))
+                      .thenReturn({hello: 'I am 5'});
 
-                    service = new MyService(SomeServiceMock, SpecialServiceMock);
+                    service = new MyService(
+                      instance(SomeServiceMock), 
+                      instance(SpecialServiceMock)
+                    );
                   });
 
                   afterEach(() => {
@@ -798,6 +815,7 @@
             </div>
             
             <div class="fragment" data-markdown>
+              <script type="text/template">
               ```typescript []
               let instances = 0;
               export getMyNeededObjectStub(config?: Partial<MyNeededObject>): MyNeededObject {
@@ -809,6 +827,7 @@
                 }
               }
               ```
+            </script>
             </div>
 
             <div class="fragment" data-markdown>
@@ -854,8 +873,9 @@
             <br>
               
             <small style="display: block; text-align: right;" class="fragment">
-                <div>(*) With component testing, you will need to add some HTML content so you use them in your tests.</div>
-                <!-- <div>(**) Some people does not like to group similar requirements on before each.</div> -->
+                <div>
+                  (*) With component testing, you will need to add some HTML content so you use them in your tests.
+                </div>
             </small>
               
           </section>
@@ -867,48 +887,67 @@
           </section>
         </section>
 
-        <section data-auto-animate>
-          <h2>Common Pitfalls</h2>
-        </section>
+        <section>
+          
+          <section data-auto-animate><h2>Common Pitfalls</h2></section>
 
-        <section data-auto-animate>
-          <h2>Common Pitfalls</h2>
+          <section data-auto-animate>
+            <h2>Common Pitfalls</h2>
           <ul>
-            <li class="fragment">Do not use Slashes on your test names, it will break debugging.</li>
+            <li>Do not use Slashes on your test names, it will break debugging.</li>
+            <li class="fragment">Sometimes you have assure your environment is correct using <code class="inline">expect()</code> before your test it self. <br>
+              <div data-markdown  class="fragment">
+                ```typescript
+                expect(myService.initialize()).toBe(false); // Correct Environment
+
+                myService.act();
+
+                expect(myService.get()).toBe(true); // What I wanted
+                ```
+              </div>
+            </li>
             <li class="fragment">If you are using Services or components that render content outside your component (like popovers), you have to manually clean them! 
               <br>
-              <small> <br>Tip: 
+              <small  class="fragment"> <br>Tip: 
                 <code class="inline language-typescript">
                   document.getElementsByTagName('body')[0].innerHTML = ''
                 </code>
                 </small>
                 <br><br>
             </li>
-            <li class="fragment">You can get False Positive (passing) tests when you forget to use write <code class="inline language-typescript">once()</code> in a <call class="inline">verify()</call> call.
-              <br>
-              <small  class="fragment">
-                <br>
-                <code class="inline language-typescript">verify(SomethingMock.someFunction())</code> 
-                👈🏼 missing <code class="inline">once()</code> / <code class="inline">twice()</code>/etc!!
-              </small>
-              <br><br>
-            </li>
-            <li class="fragment">You have to find the button inside components that trigger some `clicked` events.
-              <small  class="fragment">
-                <br>
-                <code class="inline language-typescript">screen.getByTestId('some-component-test-id').querySelector('button')</code> 
-                <br><br>
-              </small>
-            </li>
-            <li class="fragment">Feel free to add the ones you will <strong>definitively</strong> find here.</li>
           </ul>
+          </section>
+
+          <section data-auto-animate>
+            <h2>Common Pitfalls</h2>
+            <ul>
+              <li >You can get False Positive (passing) tests when you forget to write <code class="inline language-typescript">once()</code> in a <call class="inline">verify()</call> call.
+                <br>
+                <small  class="fragment">
+                  <br>
+                  <code class="inline language-typescript">verify(SomethingMock.someFunction())</code> 
+                  👈🏼 missing <code class="inline">once()</code> / <code class="inline">twice()</code>/etc!!
+                </small>
+                <br><br>
+              </li>
+              <li class="fragment">You have to find the button inside components that trigger some `clicked` events.
+                <small class="fragment">
+                  <br>
+                  <code class="inline language-typescript">screen.getByTestId('some-component-test-id').querySelector('button')</code> 
+                  <br><br>
+                </small>
+              </li>
+              <li class="fragment">Feel free to add the ones you will <strong>definitively</strong> find here.</li>
+            </ul>
+          </section>
         </section>
 
         <section data-info="Hands on! Test Cache Service">
           <h2>Hands on 2!</h2>
 
-          <div data-markdown>
-            Let's try to test our `ChipComponent`
+          <div>
+            Let's try to test our <code class="inline">ChipComponent</code> <br>
+            <small>Notice: <code class="inline">ChipComponent</code> has to be used as a child of <code class="inline">ChipGroupComponent</code></small>😉
           </div>
 
           <div data-markdown>
