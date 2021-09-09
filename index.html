@@ -971,11 +971,12 @@
 			// More info about initialization & config:
 			// - https://revealjs.com/initialization/
 			// - https://revealjs.com/config/
+      Reveal.configure({ pdfSeparateFragments: false })
 			Reveal.initialize({
 				hash: true,
 
 				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealZoom ]
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealZoom ],
 			});
 		</script>
 	</body>

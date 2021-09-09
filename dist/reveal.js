@@ -1,6 +1,6 @@
 /*!
 * reveal.js 4.1.3
-* https://revealjs.com
+* https://www.qupaya.com
 * MIT licensed
 *
 * Copyright (C) 2020 Hakim El Hattab, https://hakim.se
